@@ -46,14 +46,16 @@ class R2Point
 	return (((a.y-b.y)*@x)+((b.x-a.x)*@y)+(a.x*b.y-b.x*a.y))/Math.sqrt( (b.x-a.x)**2 + (b.y-a.y)**2 )
   end
   
+  
   # лежит ли внутри треугольника c окрестностью (добавлено)
   def is_inside?(a,b,c)
 	if self.light?(a,b) && self.light?(b,c) && self.light?(c,a) #если внутри треугольника
 		true
 	#elsif (@x-a.x)**2+(@y-a.y)**2<=1 || (@x-b.x)**2+(@y-b.y)**2<=1 || (@x-c.x)**2+(@y-c.y)**2<=1 #если внутри окружностей (а надо ли, если расстояние учитывает еденичный радиус?
 		#true
-	elsif (dist_segm(a,b)>=0 && dist_segm(a,b)<=1) || (dist_segm(a,c)>=0 && dist_segm(a,c)<=1)  || (dist_segm(b,c)>=0 && dist_segm(b,c)<=1)   #если в окрестности
-		true
+	#elsif (dist_segm(a,b)>=0 && dist_segm(a,b)<=1) || (dist_segm(a,c)>=0 && dist_segm(a,c)<=1)  || (dist_segm(b,c)>=0 && dist_segm(b,c)<=1)   #если в окрестности
+		#true
+#нужно считать точки прямоугольника при помощи прямоугольных треугольников и поворота относительно осей координат(к примеру, ОХ). Длина гипотенузы=1. Вспомни Вову.
 	else
 		false
 	end
