@@ -50,8 +50,8 @@ class R2Point
   def is_inside?(a,b,c)
 	if self.light?(a,b) && self.light?(b,c) && self.light?(c,a) #если внутри треугольника
 		true
-	elsif (@x-a.x)**2+(@y-a.y)**2<=1 || (@x-b.x)**2+(@y-b.y)**2<=1 || (@x-c.x)**2+(@y-c.y)**2<=1 #если внутри окружностей
-		true
+	#elsif (@x-a.x)**2+(@y-a.y)**2<=1 || (@x-b.x)**2+(@y-b.y)**2<=1 || (@x-c.x)**2+(@y-c.y)**2<=1 #если внутри окружностей (а надо ли, если расстояние учитывает еденичный радиус?
+		#true
 	elsif (dist_segm(a,b)>=0 && dist_segm(a,b)<=1) || (dist_segm(a,c)>=0 && dist_segm(a,c)<=1)  || (dist_segm(b,c)>=0 && dist_segm(b,c)<=1)   #если в окрестности
 		true
 	else
