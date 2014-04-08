@@ -4,17 +4,13 @@ require "./deq"
 
 # Абстрактная фигура
 class Figure
-  def initialize; @ins=0;@@x=Deq.new; end #инициализация счетчика (добавлено)
+  def initialize; @ins=0 end #инициализация счетчика (добавлено)
   def set_triangle(a=R2Point.new, b=R2Point.new, c=R2Point.new) #метод создания треугольника (добавлено)
 	  @@a, @@b, @@c = a,b,c
-	  @@x=Deq.new
-	  @@x.push_first(@@a)
-	  @@x.push_first(@@b)
-	  @@x.push_first(@@c)
   end 
   def perimeter; 0.0 end
   def area;      0.0 end
-  def intr?(p) ; (p.is_inside?(@@a,@@b,@@c)) ? 1 : 0 ;end #проверка, попадает ли точка в треугольник (добавлено)
+  def intr?(p) ; (p.is_inside?(@@a,@@b,@@c)) ? (1; (p "added #{p}")) : (0; (p "removed #{p}")) ;end #проверка, попадает ли точка в треугольник (добавлено)
   def inside_points; @ins; end #вывод ответа (добавлено)
 end
 
@@ -32,7 +28,7 @@ end
 class Point < Figure
   def initialize(p) 
     @p = p
-	@ins=intr?(p) #если точка попадает в треугольник, то ставим счетчик 1 (добавлено)
+	@ins=intr?(@p) #если точка попадает в треугольник, то ставим счетчик 1 (добавлено)
   end
   def add(q)
     @p == q ? self : Segment.new(@p, q)
@@ -43,7 +39,7 @@ end
 class Segment < Figure
   def initialize(p, q) 
     @p, @q = p, q
-	@ins=intr?(p)+intr?(q) #(добавлено)
+	@ins=intr?(@p)+intr?(@q) #(добавлено)
   end
   def perimeter
     2.0 * @p.dist(@q)
@@ -98,7 +94,7 @@ class Polygon < Figure
       while t.light?(p, @points.first)
         @perimeter -= p.dist(@points.first)
 		@area += R2Point.area(t, p, @points.first).abs
-		@ins -= intr?(@points.first) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
+		@ins -= intr?(p) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
         p = @points.pop_first
       end
       @points.push_first(p)
@@ -108,7 +104,7 @@ class Polygon < Figure
       while t.light?(@points.last, p)
         @perimeter -= p.dist(@points.last)
 		@area += R2Point.area(t, p, @points.last).abs
-		@ins -= intr?(@points.last) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
+		@ins -= intr?(p) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
         p = @points.pop_last
       end
       @points.push_last(p)

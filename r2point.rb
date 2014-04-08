@@ -43,19 +43,41 @@ class R2Point
   
   # расстояние от точки до отрезка (добавлено)
   def dist_segm(a,b)
-	return (((a.y-b.y)*@x)+((b.x-a.x)*@y)+(a.x*b.y-b.x*a.y))/Math.sqrt( (b.x-a.x)**2 + (b.y-a.y)**2 )
+	return ((((a.y-b.y)*@x)+((b.x-a.x)*@y)+(a.x*b.y-b.x*a.y))/Math.sqrt( (b.x-a.x)**2 + (b.y-a.y)**2 )).abs
   end
   
+  def ugol(k) # угол наклона прямой (добавлено)
+  	  tx=k.x-@x
+  	  ty=k.y-@y
+  	  if tx!=0 && ty!=0
+  	  	Math.acos(tx/Math.sqrt(tx**2+ty**2))*180/Math::PI
+  	  else
+  	  	0
+  	  end
+  end
   
+  def newpoint(b)
+  	p self.ugol(b)
+  	if self.ugol(b)>45
+  		tempx1=b.x - Math.sin(self.ugol(b))
+  		tempy1=b.y - Math.cos(self.ugol(b))
+  		tempx2=@x - Math.sin(self.ugol(b))
+  		tempy2=@y - Math.cos(self.ugol(b))
+  	else
+  		tempx1=b.x + Math.sin(self.ugol(b))
+  		tempy1=b.y + Math.cos(self.ugol(b))
+  		tempx2=@x + Math.sin(self.ugol(b))
+  		tempy2=@y + Math.cos(self.ugol(b))
+  	end
+  	a=R2Point.new(tempx1,tempy1)
+  	r=R2Point.new(tempx2,tempy2)
+  end
   # лежит ли внутри треугольника c окрестностью (добавлено)
   def is_inside?(a,b,c)
-	if self.light?(a,b) && self.light?(b,c) && self.light?(c,a) #если внутри треугольника
-		true
-	#elsif (@x-a.x)**2+(@y-a.y)**2<=1 || (@x-b.x)**2+(@y-b.y)**2<=1 || (@x-c.x)**2+(@y-c.y)**2<=1 #если внутри окружностей (а надо ли, если расстояние учитывает еденичный радиус?
-		#true
-	#elsif (dist_segm(a,b)>=0 && dist_segm(a,b)<=1) || (dist_segm(a,c)>=0 && dist_segm(a,c)<=1)  || (dist_segm(b,c)>=0 && dist_segm(b,c)<=1)   #если в окрестности
-		#true
-#нужно считать точки прямоугольника при помощи прямоугольных треугольников и поворота относительно осей координат(к примеру, ОХ). Длина гипотенузы=1. Вспомни Вову.
+	if !(self.light?(a,b) || self.light?(b,c) || self.light?(a,c)) #если внутри треугольника
+		return true
+	elsif (@x-a.x)**2+(@y-a.y)**2<=1 || (@x-b.x)**2+(@y-b.y)**2<=1 || (@x-c.x)**2+(@y-c.y)**2<=1 #если внутри окружностей (а надо ли, если расстояние учитывает еденичный радиус?
+		return true
 	else
 		false
 	end
@@ -67,3 +89,11 @@ class R2Point
     readline.to_f
   end
 end
+
+=begin
+a=R2Point.new(0,0)
+b=R2Point.new(3,0)
+c=R2Point.new(3,3)
+d=R2Point.new(2,2)
+p d.light?(a,c)
+=end
