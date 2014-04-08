@@ -43,43 +43,24 @@ class R2Point
   
   # расстояние от точки до отрезка (добавлено)
   def dist_segm(a,b)
-	return ((((a.y-b.y)*@x)+((b.x-a.x)*@y)+(a.x*b.y-b.x*a.y))/Math.sqrt( (b.x-a.x)**2 + (b.y-a.y)**2 )).abs
+	return ((((a.y-b.y)*@x)+((b.x-a.x)*@y)+(a.x*b.y-b.x*a.y))/Math.sqrt( (b.x-a.x)**2 + (b.y-a.y)**2 )).abs #формула взята с сайта http://algolist.manual.ru/maths/geom/distance/pointline.php
   end
   
-  def ugol(k) # угол наклона прямой (добавлено)
-  	  tx=k.x-@x
-  	  ty=k.y-@y
-  	  if tx!=0 && ty!=0
-  	  	Math.acos(tx/Math.sqrt(tx**2+ty**2))*180/Math::PI
-  	  else
-  	  	0
-  	  end
-  end
+  def inside_triangle?(a,b,c) #проверка на принадлежность точки треугольнику
+	l=(a.x-@x)*(b.y-a.y)-(b.x-a.x)*(a.y-@y)
+	m=(b.x-@x)*(c.y-b.y)-(c.x-b.x)*(b.y-@y)
+	n=(c.x-@x)*(a.y-c.y)-(a.x-c.x)*(c.y-@y)
+	(l>0 and m>0 and n>0) or (l<0 and m<0 and n<0)
+end
   
-  def newpoint(b)
-  	p self.ugol(b)
-  	if self.ugol(b)>45
-  		tempx1=b.x - Math.sin(self.ugol(b))
-  		tempy1=b.y - Math.cos(self.ugol(b))
-  		tempx2=@x - Math.sin(self.ugol(b))
-  		tempy2=@y - Math.cos(self.ugol(b))
-  	else
-  		tempx1=b.x + Math.sin(self.ugol(b))
-  		tempy1=b.y + Math.cos(self.ugol(b))
-  		tempx2=@x + Math.sin(self.ugol(b))
-  		tempy2=@y + Math.cos(self.ugol(b))
-  	end
-  	a=R2Point.new(tempx1,tempy1)
-  	r=R2Point.new(tempx2,tempy2)
-  end
   # лежит ли внутри треугольника c окрестностью (добавлено)
   def is_inside?(a,b,c)
-	if !(self.light?(a,b) || self.light?(b,c) || self.light?(a,c)) #если внутри треугольника
-		return true
-	elsif (@x-a.x)**2+(@y-a.y)**2<=1 || (@x-b.x)**2+(@y-b.y)**2<=1 || (@x-c.x)**2+(@y-c.y)**2<=1 #если внутри окружностей (а надо ли, если расстояние учитывает еденичный радиус?
-		return true
+	if self.inside_triangle?(a,b,c) #если в треугольнике
+	  true
+	elsif (self.dist_segm(a,b)<1 && self.dist_segm(a,b)>0) ||  (self.dist_segm(b,c)<1 && self.dist_segm(b,c)>0) || (self.dist_segm(c,a)<1 && self.dist_segm(c,a)>0) || (self.dist_segm(a,c)<1 && self.dist_segm(a,c)>0)#расстояние от точки до одной из сторон меньше единицы.
+	  true
 	else
-		false
+	  false
 	end
   end
 
@@ -89,11 +70,3 @@ class R2Point
     readline.to_f
   end
 end
-
-=begin
-a=R2Point.new(0,0)
-b=R2Point.new(3,0)
-c=R2Point.new(3,3)
-d=R2Point.new(2,2)
-p d.light?(a,c)
-=end

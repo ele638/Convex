@@ -15,10 +15,6 @@ module TkDrawer
   def TkDrawer.draw_point(p)
     TkcOval.new(CANVAS, x(p) + 1, y(p) + 1, x(p) - 1, y(p) - 1) {fill("black")}
   end
-  # рисование круга
-   def TkDrawer.draw_circle(p)
-    TkcOval.new(CANVAS, x(p) + 50, y(p) + 50, x(p) - 50, y(p) - 50) {fill("black")}
-  end
   # рисование линии
   def TkDrawer.draw_line(p,q)
     TkcLine.new(CANVAS, x(p), y(p), x(q), y(q)) {fill("black")}    
@@ -44,11 +40,6 @@ end
 class Figure
   def draw
     TkDrawer.clean
-	@@x.size.times do 
-      TkDrawer.draw_line(@@x.last, @@x.first)
-	  TkDrawer.draw_circle(@@x.last)
-      @@x.push_last(@@x.pop_first)
-	end
   end
 end
 class Point < Figure

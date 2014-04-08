@@ -10,7 +10,7 @@ class Figure
   end 
   def perimeter; 0.0 end
   def area;      0.0 end
-  def intr?(p) ; (p.is_inside?(@@a,@@b,@@c)) ? (1; (p "added #{p}")) : (0; (p "removed #{p}")) ;end #проверка, попадает ли точка в треугольник (добавлено)
+  def intr?(p) ; (p.is_inside?(@@a,@@b,@@c)) ? 1 : 0 ;end #проверка, попадает ли точка в треугольник (добавлено)
   def inside_points; @ins; end #вывод ответа (добавлено)
 end
 
