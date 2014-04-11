@@ -43,8 +43,12 @@ class R2Point
   
   # расстояние от точки до отрезка (добавлено)
   def dist_segm(a,b)
-	return ((((a.y-b.y)*@x)+((b.x-a.x)*@y)+(a.x*b.y-b.x*a.y))/Math.sqrt( (b.x-a.x)**2 + (b.y-a.y)**2 )).abs #формула взята с сайта http://algolist.manual.ru/maths/geom/distance/pointline.php
-  end
+	p1=(@x-a.x)*(b.x-a.x)+(@y-a.y)*(b.y-a.y) #скалярное произведение векторов AB и AМ
+	p2=(a.x-b.x)*(@x-b.x)+(a.y-b.y)*(@y-b.y) #скалярное произведение векторов BA и BМ
+	return Math.sqrt((@x-a.x)**2+(@y-a.y)**2) if p1<=0 #Если <=0, то проекция точки М попадает левее или на точку А. В таком случае возвращаем длину вектора AМ.
+	return Math.sqrt((@x-b.x)**2+(@y-b.y)**2) if p2<=0 #Аналогично условию выше. Если p1>0, то нам остается проверить правую границу. Если p2<=0, то проекция точки М либо правее точки B, либо на ней.
+	return (((a.y-b.y)*@x+(b.x-a.x)*@y+(a.x*b.y-b.x*a.y))/Math.sqrt((b.x-a.x)**2+(b.y-a.y)**2)).abs #Если проекция точки М попадает на отрезок AB (оба верхних условия не выполнены), то находим перпендикуляр от М до прямой, проходящей через АB.
+end
   
   def inside_triangle?(a,b,c) #проверка на принадлежность точки треугольнику
 	l=(a.x-@x)*(b.y-a.y)-(b.x-a.x)*(a.y-@y)
@@ -57,7 +61,7 @@ end
   def is_inside?(a,b,c)
 	if self.inside_triangle?(a,b,c) #если в треугольнике
 	  true
-	elsif (self.dist_segm(a,b)<1 && self.dist_segm(a,b)>0) ||  (self.dist_segm(b,c)<1 && self.dist_segm(b,c)>0) || (self.dist_segm(c,a)<1 && self.dist_segm(c,a)>0) || (self.dist_segm(a,c)<1 && self.dist_segm(a,c)>0)#расстояние от точки до одной из сторон меньше единицы.
+	elsif (self.dist_segm(a,b)<=1 && self.dist_segm(a,b)>=0) ||  (self.dist_segm(b,c)<=1 && self.dist_segm(b,c)>=0) || (self.dist_segm(c,a)<=1 && self.dist_segm(c,a)>=0) || (self.dist_segm(a,c)<=1 && self.dist_segm(a,c)>=0)#расстояние от точки до одной из сторон меньше единицы.
 	  true
 	else
 	  false
