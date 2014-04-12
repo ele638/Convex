@@ -95,4 +95,91 @@ describe R2Point do
 
   end
 
+  context "Метод dist_segm до отрезка AB, где A(2,1) и B(5,3) " do
+	
+	let(:a) { R2Point.new(2.0,1.0) }
+	let(:b) { R2Point.new(5.0,3.0) }
+	
+	it "возвращает значение Math.sqrt(2)  при точке (1,2) " do
+	  expect(R2Point.new(1.0,2.0).dist_segm(a,b)).to be_within(EPS).of(Math.sqrt(2.0)) 
+	end
+	
+	it "возвращает значение Math.sqrt(2) при точке (1,0)" do
+	  expect(R2Point.new(1.0,0.0).dist_segm(a,b)).to be_within(EPS).of(Math.sqrt(2.0)) 
+	end
+	
+	it "возвращает значение 1 при точке (5,4)" do
+	  expect(R2Point.new(5.0,4.0).dist_segm(a,b)).to be_within(EPS).of(1) 
+	end
+	
+	it "возвращает значение 1 при точке (2,0)" do
+	  expect(R2Point.new(2.0,0.0).dist_segm(a,b)).to be_within(EPS).of(1) 
+	end
+	
+	it "возвращает значение 2 при точке (7,3)" do
+	  expect(R2Point.new(7.0,3.0).dist_segm(a,b)).to be_within(EPS).of(2) 
+	end
+	
+	it "возвращает значение 0 при точке (2,1)" do
+	  expect(R2Point.new(2.0,1.0).dist_segm(a,b)).to be_within(EPS).of(0) 
+	end
+	
+  end
+  
+  context "Метод inside_triangle? для точек (0,0),(3,0).(3,3) " do
+    
+	let(:a) { R2Point.new(0.0,0.0) }
+	let(:b) { R2Point.new(3.0,0.0) }
+	let(:c) { R2Point.new(3.0,3.0) }
+	
+	it "возвращает true при точке (2,1)" do
+	  expect(R2Point.new(2.0,1.0).inside_triangle?(a,b,c)).to be_true
+	end
+	
+	it "возвращает false при точке (2,4)" do
+	  expect(R2Point.new(2.0,4.0).inside_triangle?(a,b,c)).to be_false
+	end
+	
+	it "возвращает false при точке (2,3)" do #проверка грани идет в методе dist_segm
+	  expect(R2Point.new(2.0,3.0).inside_triangle?(a,b,c)).to be_false
+	end
+	
+	it "возвращает true при точке (0.5,0.2)" do
+	  expect(R2Point.new(0.5,0.2).inside_triangle?(a,b,c)).to be_true
+	end
+	
+	it "возвращает false при точке (4,4)" do
+	  expect(R2Point.new(4.0,4.0).inside_triangle?(a,b,c)).to be_false
+	end
+	
+  end
+  
+  context "Метод  is_inside? для точек (0,0),(3,0).(3,3) " do
+    
+	let(:a) { R2Point.new(0.0,0.0) }
+	let(:b) { R2Point.new(3.0,0.0) }
+	let(:c) { R2Point.new(3.0,3.0) }
+	
+	it "возвращает true при точке (2,1)" do
+	  expect(R2Point.new(2.0,1.0).is_inside?(a,b,c)).to be_true
+	end
+	
+	it "возвращает false при точке (2,4)" do
+	  expect(R2Point.new(2.0,4.0).is_inside?(a,b,c)).to be_false
+	end
+	
+	it "возвращает true при точке (2,3)" do
+	  expect(R2Point.new(2.0,3.0).is_inside?(a,b,c)).to be_true
+	end
+	
+	it "возвращает true при точке (4,3)" do
+	  expect(R2Point.new(4.0,3.0).is_inside?(a,b,c)).to be_true
+	end
+	
+	it "возвращает true при точке (3,3)" do
+	  expect(R2Point.new(3.0,3.0).is_inside?(a,b,c)).to be_true
+	end
+	
+  end
+  
 end  

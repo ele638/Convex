@@ -15,13 +15,6 @@ module TkDrawer
   def TkDrawer.draw_point(p)
     TkcOval.new(CANVAS, x(p) + 1, y(p) + 1, x(p) - 1, y(p) - 1) {fill("black")}
   end
-  # рисование окружности (добавлено)
-  def TkDrawer.draw_circle(p)
-    TkcOval.new(CANVAS, x(p) + 50, y(p) + 50, x(p) - 50, y(p) - 50)
-  end
-  def TkDrawer.draw_rectangle(a,b)
-  	TkcRectangle.new(CANVAS, x(a), y(a), x(b), y(b), "width"=>1) {fill("white")}
-  end
   # рисование линии
   def TkDrawer.draw_line(p,q)
     TkcLine.new(CANVAS, x(p), y(p), x(q), y(q)) {fill("black")}    
@@ -47,7 +40,6 @@ end
 class Figure
   def draw
     TkDrawer.clean
-    TkDrawer.draw_rectangle(@@a,@@b)
   end
 end
 class Point < Figure

@@ -54,14 +54,14 @@ end
 	l=(a.x-@x)*(b.y-a.y)-(b.x-a.x)*(a.y-@y)
 	m=(b.x-@x)*(c.y-b.y)-(c.x-b.x)*(b.y-@y)
 	n=(c.x-@x)*(a.y-c.y)-(a.x-c.x)*(c.y-@y)
-	(l>0 and m>0 and n>0) or (l<0 and m<0 and n<0)
+	(l>0 && m>0 && n>0) || (l<0 && m<0 && n<0)
 end
   
   # лежит ли внутри треугольника c окрестностью (добавлено)
   def is_inside?(a,b,c)
 	if self.inside_triangle?(a,b,c) #если в треугольнике
 	  true
-	elsif (self.dist_segm(a,b)<=1 && self.dist_segm(a,b)>=0) ||  (self.dist_segm(b,c)<=1 && self.dist_segm(b,c)>=0) || (self.dist_segm(c,a)<=1 && self.dist_segm(c,a)>=0) || (self.dist_segm(a,c)<=1 && self.dist_segm(a,c)>=0)#расстояние от точки до одной из сторон меньше единицы.
+	elsif (self.dist_segm(a,b)<=1 && self.dist_segm(a,b)>=0) ||  (self.dist_segm(b,c)<=1 && self.dist_segm(b,c)>=0) || (self.dist_segm(c,a)<=1 && self.dist_segm(c,a)>=0) || (self.dist_segm(a,c)<=1 && self.dist_segm(a,c)>=0)#расстояние от точки до одной из сторон меньше, либо равно единицы.
 	  true
 	else
 	  false
