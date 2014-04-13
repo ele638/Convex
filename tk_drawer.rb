@@ -19,6 +19,10 @@ module TkDrawer
   def TkDrawer.draw_line(p,q)
     TkcLine.new(CANVAS, x(p), y(p), x(q), y(q)) {fill("black")}    
   end
+  # рисование треугольника (добавлено)
+  def TkDrawer.draw_poly(a,b,c)
+	TkcPolygon.new(CANVAS, x(a), y(a), x(b), y(b), x(c), y(c), 'fill'=>'green')
+  end
   # рисование окрестности (добавлено)
    def TkDrawer.draw_line_1(p,q) 
     TkcLine.new(CANVAS, x(p), y(p), x(q), y(q), 'width'=>'100', 'fill'=>'green' )    
@@ -47,6 +51,7 @@ end
 class Figure
   def draw
     TkDrawer.clean
+	TkDrawer.draw_poly(@@a,@@b,@@c)
 	TkDrawer.draw_line_1(@@a,@@b)
 	TkDrawer.draw_line_1(@@b,@@c)
 	TkDrawer.draw_line_1(@@a,@@c)
