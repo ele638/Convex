@@ -19,7 +19,14 @@ module TkDrawer
   def TkDrawer.draw_line(p,q)
     TkcLine.new(CANVAS, x(p), y(p), x(q), y(q)) {fill("black")}    
   end
-
+  # рисование окрестности (добавлено)
+   def TkDrawer.draw_line_1(p,q) 
+    TkcLine.new(CANVAS, x(p), y(p), x(q), y(q), 'width'=>'100', 'fill'=>'green' )    
+  end
+  # рисование кругов (добавлено)
+   def TkDrawer.draw_circle(p)
+    TkcOval.new(CANVAS, x(p) + 50, y(p) + 50, x(p) - 50, y(p) - 50, 'fill'=>"green")
+  end
   private
   # преобразование координат
   def TkDrawer.x(p)
@@ -40,12 +47,19 @@ end
 class Figure
   def draw
     TkDrawer.clean
+	TkDrawer.draw_line_1(@@a,@@b)
+	TkDrawer.draw_line_1(@@b,@@c)
+	TkDrawer.draw_line_1(@@a,@@c)
+	TkDrawer.draw_circle(@@a)
+	TkDrawer.draw_circle(@@b)
+	TkDrawer.draw_circle(@@c)
   end
 end
 class Point < Figure
   def draw
     super
     TkDrawer.draw_point(@p)
+
   end
 end
 class Segment < Figure
