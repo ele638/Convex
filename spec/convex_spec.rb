@@ -5,7 +5,7 @@ EPS = 1.0e-12
 
 describe Void do
 
-  let(:fig) { Void.new }
+  let(:fig) { Void.new(R2Point.new(0,0),R2Point.new(0,0),R2Point.new(0,0)) } #пустой ввод для прогона эталонных тестов
 
   it "Конструктор порождает экземпляр класса Void (нульугольник)" do
     expect(fig).to be_an_instance_of(Void)
@@ -26,7 +26,6 @@ describe Void do
   it "При добавлении точки нульугольник превращается в одноугольник" do
     expect(fig.add(R2Point.new(0.0,0.0))).to be_an_instance_of(Point)
   end
-
 end
 
 describe Point do
@@ -56,7 +55,6 @@ describe Point do
   it "При добавлении точки одноугольник может стать двуугольником" do
     expect(fig.add(R2Point.new(1.0,0.0))).to be_an_instance_of(Segment)
   end
-
 end
 
 describe Segment do
@@ -185,5 +183,84 @@ describe Polygon do
     end
 
   end
+end
 
+
+describe Void do #добавленные тесты
+	
+	let(:fig) { Void.new(R2Point.new(0,0),R2Point.new(3,0),R2Point.new(3,3)) } #мой треугольник в тестах А(0,0), В(3,0), С(3,3)
+	
+	context "Метод inside_points" do
+	
+		it "Возвращает nil, если оболочка - нульугольник" do
+			expect(fig.inside_points).to be nil
+		end
+	  
+		it "Возвращает 1 при добавлении точки 0,0" do
+			expect(fig.add(R2Point.new(0,0)).inside_points).to be 1
+		end
+		
+		it "Возвращает 0 при добавлении точки -5,0" do
+			expect(fig.add(R2Point.new(-5,0)).inside_points).to be 0
+		end
+		
+		let(:fig1) do 
+			fig1=Void.new(R2Point.new(0,0),R2Point.new(3,0),R2Point.new(3,3))
+			a=R2Point.new(-5,0)
+			b=R2Point.new(0,0)
+			fig1=Segment.new(a,b) #тестируем работу с отрезком
+		end
+
+		it "Конструктор порождает экземпляр класса Segment (двуугольник)" do #тесты эталонного варианта не нарушены, типы оболочек соблюдаются
+			expect(fig1).to be_an_instance_of(Segment)
+		end
+
+		it "Возвращает 1 при добавлении точки a(0,0) и точки b(-5,0)" do
+			expect(fig1.inside_points).to be 1
+		end
+		
+		it "Возвращает 1 при добавлении точки 1,0" do
+			expect(fig1.add(R2Point.new(1,0)).inside_points).to be 1
+		end
+		
+		it "Возвращает 0 при добавлении точки 10,0" do
+			expect(fig1.add(R2Point.new(10,0)).inside_points).to be 0
+		end
+		
+		let(:fig2) do
+			fig2 = Void.new(R2Point.new(0,0),R2Point.new(3,0),R2Point.new(3,3))
+			a = R2Point.new(2,1)
+			b = R2Point.new(5,0)
+			c = R2Point.new(0,0)
+			fig2 = Polygon.new(a,b,c) #тестируем многоугольники
+		end
+		
+		it "конструктор порождает экземпляр класса Polygon (многоугольник)" do #тесты эталонного варианта не нарушены, типы оболочек соблюдаются
+		  expect(fig2).to be_an_instance_of(Polygon)
+		end
+		
+		it "Возвращает 2 при добавлении точки a(1,1), точки b(5,0) и точки c(0,0)" do
+			expect(fig2.inside_points).to be 2
+		end
+		
+		it "Возвращает 1 при добавлении точки 4,4" do 
+			expect(fig2.add(R2Point.new(4,4)).inside_points).to be 1
+		end
+		
+		it "Возвращает 2  при добавлении точки 4,3" do
+			expect(fig2.add(R2Point.new(4,3)).inside_points).to be 2
+		end
+		
+		it "Возвращает 2  при добавлении точки 2,3" do
+			expect(fig2.add(R2Point.new(2,3)).inside_points).to be 2
+		end
+		
+		it "Возвращает 3  при добавлении точек 4,3 и 2,3" do
+			expect(fig2.add(R2Point.new(4,3)).add(R2Point.new(2,3)).inside_points).to be 3
+		end
+		
+		it "Возвращает 2  при добавлении точек 4,3 , 2,3 и 4,4" do
+			expect(fig2.add(R2Point.new(4,3)).add(R2Point.new(2,3)).add(R2Point.new(4,4)).inside_points).to be 2
+		end
+	end
 end

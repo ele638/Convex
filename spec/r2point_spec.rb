@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../r2point'
+require_relative "../r2point"
 
 describe R2Point do
 

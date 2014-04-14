@@ -5,7 +5,7 @@ require "./deq"
 # Абстрактная фигура
 class Figure
   def initialize; @ins=0 end #инициализация счетчика (добавлено)
-  def set_triangle(a=R2Point.new, b=R2Point.new, c=R2Point.new) #метод создания треугольника (добавлено)
+  def set_triangle(a,b,c) #метод создания треугольника (обновлено)
 	  @@a, @@b, @@c = a,b,c
   end 
   def perimeter; 0.0 end
@@ -16,8 +16,8 @@ end
 
 # "Hульугольник"
 class Void < Figure
-  def initialize #нульугольник задает наш треугольник (добавлено)
-	set_triangle
+  def initialize(a=R2Point.new, b=R2Point.new, c=R2Point.new) #нульугольник задает наш треугольник (обновлено)
+	set_triangle(a,b,c)
   end
   def add(p)
     Point.new(p)
