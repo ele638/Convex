@@ -17,7 +17,7 @@ end
 # "Hульугольник"
 class Void < Figure
   def initialize(a=R2Point.new, b=R2Point.new, c=R2Point.new) #нульугольник задает наш треугольник (обновлено)
-	set_triangle(a,b,c)
+	set_triangle(a,b,c) #инициализация треугольника путем создания объекта 3мя заданнами координатами (добавлено)
   end
   def add(p)
     Point.new(p)
@@ -28,7 +28,7 @@ end
 class Point < Figure
   def initialize(p) 
     @p = p
-	@ins=intr?(@p) #если точка попадает в треугольник, то ставим счетчик 1 (добавлено)
+	  @ins=intr?(@p) #если точка попадает в треугольник, то ставим счетчик 1 (добавлено)
   end
   def add(q)
     @p == q ? self : Segment.new(@p, q)
@@ -39,7 +39,7 @@ end
 class Segment < Figure
   def initialize(p, q) 
     @p, @q = p, q
-	@ins=intr?(@p)+intr?(@q) #(добавлено)
+	  @ins=intr?(@p)+intr?(@q) #(добавлено)
   end
   def perimeter
     2.0 * @p.dist(@q)
@@ -56,8 +56,7 @@ end
 
 # Многоугольник
 class Polygon < Figure
-  attr_reader :points, :perimeter, :area 
-
+  attr_reader :points, :perimeter, :area
   def initialize(a, b, c) 
     @points    = Deq.new
     @points.push_first(b)
@@ -93,8 +92,8 @@ class Polygon < Figure
       p = @points.pop_first
       while t.light?(p, @points.first)
         @perimeter -= p.dist(@points.first)
-		@area += R2Point.area(t, p, @points.first).abs
-		@ins -= intr?(p) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
+		    @area += R2Point.area(t, p, @points.first).abs
+		    @ins -= intr?(p) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
         p = @points.pop_first
       end
       @points.push_first(p)
@@ -103,8 +102,8 @@ class Polygon < Figure
       p = @points.pop_last
       while t.light?(@points.last, p)
         @perimeter -= p.dist(@points.last)
-		@area += R2Point.area(t, p, @points.last).abs
-		@ins -= intr?(p) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
+		    @area += R2Point.area(t, p, @points.last).abs
+		    @ins -= intr?(p) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
         p = @points.pop_last
       end
       @points.push_last(p)
@@ -112,7 +111,7 @@ class Polygon < Figure
       # добавление двух новых рёбер 
       @perimeter += t.dist(@points.first) + t.dist(@points.last)
       @points.push_first(t)
-	  @ins += intr?(t) #если новая точка попадает в треугольник, то увеличиваем счетчик (добавлено)
+	    @ins += intr?(t) #если новая точка попадает в треугольник, то увеличиваем счетчик (добавлено)
     end
     self
   end

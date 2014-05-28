@@ -49,15 +49,15 @@ end
 
 # Определение метода draw для классов выпуклой оболочки
 class Figure
-  def draw
+  def draw #(рисование нашего треугольника)
     TkDrawer.clean
-	TkDrawer.draw_poly(@@a,@@b,@@c)
-	TkDrawer.draw_line_1(@@a,@@b)
-	TkDrawer.draw_line_1(@@b,@@c)
-	TkDrawer.draw_line_1(@@a,@@c)
-	TkDrawer.draw_circle(@@a)
-	TkDrawer.draw_circle(@@b)
-	TkDrawer.draw_circle(@@c)
+  	TkDrawer.draw_poly(@@a,@@b,@@c)
+  	TkDrawer.draw_line_1(@@a,@@b)
+  	TkDrawer.draw_line_1(@@b,@@c)
+  	TkDrawer.draw_line_1(@@a,@@c)
+  	TkDrawer.draw_circle(@@a)
+  	TkDrawer.draw_circle(@@b)
+  	TkDrawer.draw_circle(@@c)
   end
 end
 class Point < Figure
