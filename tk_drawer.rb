@@ -21,7 +21,7 @@ module TkDrawer
   end
   # рисование треугольника (добавлено)
   def TkDrawer.draw_poly(a,b,c)
-	TkcPolygon.new(CANVAS, x(a), y(a), x(b), y(b), x(c), y(c), 'fill'=>'green')
+	  TkcPolygon.new(CANVAS, x(a), y(a), x(b), y(b), x(c), y(c), 'fill'=>'green')
   end
   # рисование окрестности (добавлено)
    def TkDrawer.draw_line_1(p,q) 
@@ -58,6 +58,9 @@ class Figure
   	TkDrawer.draw_circle(@@a)
   	TkDrawer.draw_circle(@@b)
   	TkDrawer.draw_circle(@@c)
+    TkDrawer.draw_line(@@a,@@b)
+    TkDrawer.draw_line(@@b,@@c)
+    TkDrawer.draw_line(@@a,@@c)
   end
 end
 class Point < Figure
