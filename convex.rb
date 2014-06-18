@@ -1,24 +1,14 @@
-
 require "./r2point"
 require "./deq"
 
 # Абстрактная фигура
 class Figure
-  def initialize; @ins=0 end #инициализация счетчика (добавлено)
-  def set_triangle(a,b,c) #метод создания треугольника (обновлено)
-	  @@a, @@b, @@c = a,b,c
-  end 
   def perimeter; 0.0 end
   def area;      0.0 end
-  def intr?(p) ; (p.is_inside?(@@a,@@b,@@c)) ? 1 : 0 ;end #проверка, попадает ли точка в треугольник (добавлено)
-  def inside_points; @ins; end #вывод ответа (добавлено)
 end
 
 # "Hульугольник"
 class Void < Figure
-  def initialize(a=R2Point.new, b=R2Point.new, c=R2Point.new) #нульугольник задает наш треугольник (обновлено)
-	set_triangle(a,b,c) #инициализация треугольника путем создания объекта 3мя заданнами координатами (добавлено)
-  end
   def add(p)
     Point.new(p)
   end
@@ -28,7 +18,6 @@ end
 class Point < Figure
   def initialize(p) 
     @p = p
-	  @ins=intr?(@p) #если точка попадает в треугольник, то ставим счетчик 1 (добавлено)
   end
   def add(q)
     @p == q ? self : Segment.new(@p, q)
@@ -39,7 +28,6 @@ end
 class Segment < Figure
   def initialize(p, q) 
     @p, @q = p, q
-	  @ins=intr?(@p)+intr?(@q) #(добавлено)
   end
   def perimeter
     2.0 * @p.dist(@q)
@@ -57,6 +45,7 @@ end
 # Многоугольник
 class Polygon < Figure
   attr_reader :points, :perimeter, :area
+
   def initialize(a, b, c) 
     @points    = Deq.new
     @points.push_first(b)
@@ -69,7 +58,6 @@ class Polygon < Figure
     end
     @perimeter = a.dist(b) + b.dist(c) + c.dist(a)
     @area      = R2Point.area(a, b, c).abs
-	@ins=intr?(a)+intr?(b)+intr?(c) #стартовая оболочка из трех точек (добавлено)
   end
 
   # добавление новой точки
@@ -92,8 +80,7 @@ class Polygon < Figure
       p = @points.pop_first
       while t.light?(p, @points.first)
         @perimeter -= p.dist(@points.first)
-		    @area += R2Point.area(t, p, @points.first).abs
-		    @ins -= intr?(p) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
+	@area      += R2Point.area(t, p, @points.first).abs
         p = @points.pop_first
       end
       @points.push_first(p)
@@ -102,8 +89,7 @@ class Polygon < Figure
       p = @points.pop_last
       while t.light?(@points.last, p)
         @perimeter -= p.dist(@points.last)
-		    @area += R2Point.area(t, p, @points.last).abs
-		    @ins -= intr?(p) #если точка принадлежала, а ее удаляют, то уменьшаем счетчик (добавлено)
+	@area      += R2Point.area(t, p, @points.last).abs
         p = @points.pop_last
       end
       @points.push_last(p)
@@ -111,8 +97,8 @@ class Polygon < Figure
       # добавление двух новых рёбер 
       @perimeter += t.dist(@points.first) + t.dist(@points.last)
       @points.push_first(t)
-	    @ins += intr?(t) #если новая точка попадает в треугольник, то увеличиваем счетчик (добавлено)
     end
+
     self
   end
 end
