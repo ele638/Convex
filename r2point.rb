@@ -41,6 +41,16 @@ class R2Point
     @x == other.x and @y == other.y
   end
 
+	# разность векторов
+	def -(other)                                                      ###
+		return R2Point.new(self.x - other.x, self.y - other.y)
+	end
+	
+	# векторное произведение
+	def multi(other)                                                  ###
+		return self.x*other.x + self.y*other.y
+	end
+	
   private
   def input(prompt)
     print "#{prompt} -> "

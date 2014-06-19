@@ -5,7 +5,7 @@ fig = Void.new
 begin
   while true
     fig = fig.add(R2Point.new)
-    puts "S = #{fig.area}, P = #{fig.perimeter}"
+    puts "S = #{fig.area}, P = #{fig.perimeter}, Count = #{fig.count}"
   end
 rescue EOFError
   puts "\nStop"
