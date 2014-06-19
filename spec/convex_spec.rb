@@ -187,3 +187,53 @@ describe Polygon do
   end
 
 end
+
+describe "added tests" do
+
+  it "В треугольнике все стороны пересекаются" do
+    a = R2Point.new(0.0,0.0)
+    b = R2Point.new(0.5,0.0)
+    c = R2Point.new(0.0,0.5)
+    fig = Polygon.new(a,b,c)
+    expect(fig.count).to eq 0
+  end
+  it "В квадрате площадью 0.25 2 стороны, между которыми расстояние меньше 1" do
+    a = R2Point.new(0.0,0.0)
+    b = R2Point.new(0.5,0.0)
+    c = R2Point.new(0.0,0.5)
+    fig = Polygon.new(a,b,c)
+    fig.add(R2Point.new(0.5,0.5))
+    expect(fig.count).to eq 2
+  end
+  it "В прямоугольнике со сторонами 0.5 и 3 2 стороны, между которыми расстояние меньше 1" do
+    a = R2Point.new(-1.5,0.0)
+    b = R2Point.new(1.5,0.0)
+    c = R2Point.new(1.5,0.5)
+    fig = Polygon.new(a,b,c)
+    fig.add(R2Point.new(-1.5,0.5))
+    expect(fig.count).to eq 1
+  end
+
+  let(:fig1) do
+    a = R2Point.new(-1.5,0.0)
+    b = R2Point.new(1.5,0.0)
+    c = R2Point.new(1.5,1.5)
+    fig = Polygon.new(a,b,c)
+  end
+
+  it "Добавление и удаление вершин оболочки" do
+    fig1.add(R2Point.new(-1.5,1.5))
+    expect(fig1.count).to eq 0
+    fig1.add(R2Point.new(4.0,1.0))
+    fig1.add(R2Point.new(4.0,0.5))
+    expect(fig1.count).to eq 1
+    fig1.add(R2Point.new(-2.5,1.0))
+    fig1.add(R2Point.new(-2.5,0.5))
+    expect(fig1.count).to eq 2
+    fig1.add(R2Point.new(-2.5,-0.5))
+    expect(fig1.count).to eq 1
+    fig1.add(R2Point.new(4.0,-0.5))
+    expect(fig1.count).to eq 0
+
+  end
+end

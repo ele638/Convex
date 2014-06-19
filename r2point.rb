@@ -46,7 +46,7 @@ class R2Point
 		return R2Point.new(self.x - other.x, self.y - other.y)
 	end
 	
-	# векторное произведение
+	# скалярное произведение
 	def multi(other)                                                  ###
 		return self.x*other.x + self.y*other.y
 	end

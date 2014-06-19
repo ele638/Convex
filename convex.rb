@@ -5,7 +5,7 @@ require "./deq"
 class Figure
   def perimeter; 0.0 end
   def area;      0.0 end
-	def count;     0.0 end
+	def count;     0 end
 end
 
 # "Hульугольник"
@@ -71,13 +71,7 @@ class Polygon < Figure
     @perimeter = a.dist(b) + b.dist(c) + c.dist(a)
     @area      = R2Point.area(a, b, c).abs
 		@count = 0
-		@array = []
-		@array << Segment.new(a, b)
-		@array << Segment.new(b, c)
-		@array << Segment.new(c, a)   
-		@count += 1 if @array[0].dist(@array[1]) <= 1
-		@count += 1 if @array[0].dist(@array[2]) <= 1
-		@count += 1 if @array[1].dist(@array[2]) <= 1
+		@array = [Segment.new(a, b), Segment.new(b, c), Segment.new(c, a)]
   end
 
   # добавление новой точки
@@ -102,9 +96,6 @@ class Polygon < Figure
 					break
 				end
 			end
-			for i in 0...@array.size
-				@count -= 1 if @array[i].dist(@a) <= 1
-			end
 		
       # удаление освещённых рёбер из начала дека
       p = @points.pop_first
@@ -117,9 +108,6 @@ class Polygon < Figure
 						@array.delete_at(i) 
 						break
 					end
-				end
-				for i in 0...@array.size
-					@count -= 1 if @array[i].dist(@a) <= 1
 				end
         p = @points.pop_first
       end
@@ -137,9 +125,6 @@ class Polygon < Figure
 						break
 					end
 				end
-				for i in 0...@array.size
-					@count -= 1 if @array[i].dist(@a) <= 1
-				end
         p = @points.pop_last
       end
       @points.push_last(p)
@@ -148,17 +133,16 @@ class Polygon < Figure
       @perimeter += t.dist(@points.first) + t.dist(@points.last)
 			@a = Segment.new(t, @points.first)
 			@b = Segment.new(t, @points.last)
-			for i in 0...@array.size
-				@count += 1 if @array[i].dist(@a) <= 1
-			end
-			@array << @a
-			for i in 0...@array.size
-				@count += 1 if @array[i].dist(@b) <= 1
-			end
+      @count=0
+      @array << @a
+      @array << @b
+      for i in 0...@array.size
+        for j in i...@array.size
+          @count += 1 if @array[j].dist(@array[i]) <= 1 && @array[j].dist(@array[i]) != 0
+        end
+      end
       @points.push_first(t)
-			@array << @b
     end
-
     self
   end
 end
