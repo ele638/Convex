@@ -40,6 +40,10 @@ class R2Point
   def == (other) 
     @x == other.x and @y == other.y
   end
+	
+	def to_s()
+		"#{@x},#{@y}"
+	end
 
   private
   def input(prompt)

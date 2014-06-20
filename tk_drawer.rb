@@ -40,6 +40,8 @@ end
 class Figure
   def draw
     TkDrawer.clean
+	  TkDrawer.draw_line(@point1,@point2)
+		
   end
 end
 class Point < Figure
